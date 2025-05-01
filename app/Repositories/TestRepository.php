@@ -18,4 +18,28 @@ class TestRepository implements TestInterface
     public function save($data) {
         return Test::create($data);
     }
+
+    public function getAll() {
+        return Test::all();
+    }
+
+    public function delete($id) {
+        return Test::destroy($id);
+    }
+
+    public function find($id) {
+        $record = Test::find($id);
+        if($record) {
+            return $record;
+        }else {
+            return null;
+        }
+    }
+
+    public function update($id, $data)
+    {
+        $record = Test::findOrFail($id);
+        $record->update($data);
+        return $record;
+    }
 }

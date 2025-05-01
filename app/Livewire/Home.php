@@ -11,6 +11,9 @@ class Home extends Component
     public $title;
     public $description;
 
+    public $editid;
+    public $records = [];
+
     protected $rules = [
         'title' => 'required',
         'description' => 'required',
@@ -36,15 +39,42 @@ class Home extends Component
     public function save()
     {
         $this->validate();
-
+    
         $data = [
             'title' => $this->title,
             'description' => $this->description,
         ];
-
-        $this->getTestService()->save($data);
-
+    
+        if ($this->editid) {
+            $this->getTestService()->update($this->editid, $data);
+            $this->dispatch('show-success-toast', message: 'Data updated successfully!');
+            $this->editid = null;
+        } else {
+            $this->getTestService()->save($data);
+            $this->dispatch('show-success-toast', message: 'Data saved successfully!');
+        }
+    
         $this->reset(['title', 'description']);
-        $this->dispatch('show-success-toast', message: 'Data saved successfully!');
+        $this->records = $this->getTestService()->getAll();
+    }
+
+    public function mount()
+    {
+        $this->records = $this->getTestService()->getAll();
+    }
+
+    public function delete($id)
+    {
+        $this->getTestService()->delete($id);
+        $this->records = $this->getTestService()->getAll();
+        $this->dispatch('show-success-toast', message: 'Data deleted successfully!');
+    }
+
+    public function edit($id)
+    {
+        $record = $this->getTestService()->find($id);
+        $this->title = $record->title;
+        $this->description = $record->description;
+        $this->editid = $id;
     }
 }

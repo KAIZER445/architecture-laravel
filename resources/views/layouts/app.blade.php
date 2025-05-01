@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <title>{{ $title ?? 'My App' }}</title>
+    <style>
+        #toast-container>.toast {
+            box-shadow: 0 0 12px #000d24;
+        }
+    </style>
     @livewireStyles
 </head>
+
 <body class="bg-gray-900">
     <nav>
         <a wire:navigate href="{{ route('home') }}" class="text-white">Home</a>
@@ -38,4 +45,5 @@
     </script>
     @stack('scripts')
 </body>
+
 </html>
