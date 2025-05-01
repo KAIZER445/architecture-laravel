@@ -45,5 +45,6 @@ class Home extends Component
         $this->getTestService()->save($data);
 
         $this->reset(['title', 'description']);
+        $this->dispatch('show-success-toast', message: 'Data saved successfully!');
     }
 }
