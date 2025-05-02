@@ -2,33 +2,25 @@
 
 namespace App\Livewire;
 
-use App\Interfaces\TestInterface;
-use Illuminate\Support\Facades\App;
+use App\Services\TestService;
 use Livewire\Component;
 
 class Home extends Component
 {
     public $title;
     public $description;
-
     public $editid;
     public $records = [];
-
     protected $rules = [
         'title' => 'required',
         'description' => 'required',
     ];
 
-    protected $testInterfaceClass;
+    protected TestService $testService;
 
-    public function boot(TestInterface $test)
+    public function boot(TestService $testService)
     {
-        $this->testInterfaceClass = get_class($test);
-    }
-
-    protected function getTestService(): TestInterface
-    {
-        return App::make($this->testInterfaceClass);
+        $this->testService = $testService;
     }
 
     public function render()
@@ -39,40 +31,40 @@ class Home extends Component
     public function save()
     {
         $this->validate();
-    
+
         $data = [
             'title' => $this->title,
             'description' => $this->description,
         ];
-    
+
         if ($this->editid) {
-            $this->getTestService()->update($this->editid, $data);
+            $this->testService->update($this->editid, $data);
             $this->dispatch('show-success-toast', message: 'Data updated successfully!');
             $this->editid = null;
         } else {
-            $this->getTestService()->save($data);
+            $this->testService->save($data);
             $this->dispatch('show-success-toast', message: 'Data saved successfully!');
         }
-    
+
         $this->reset(['title', 'description']);
-        $this->records = $this->getTestService()->getAll();
+        $this->records = $this->testService->getAll();
     }
 
     public function mount()
     {
-        $this->records = $this->getTestService()->getAll();
+        $this->records = $this->testService->getAll();
     }
 
     public function delete($id)
     {
-        $this->getTestService()->delete($id);
-        $this->records = $this->getTestService()->getAll();
+        $this->testService->delete($id);
+        $this->records = $this->testService->getAll();
         $this->dispatch('show-success-toast', message: 'Data deleted successfully!');
     }
 
     public function edit($id)
     {
-        $record = $this->getTestService()->find($id);
+        $record = $this->testService->find($id);
         $this->title = $record->title;
         $this->description = $record->description;
         $this->editid = $id;

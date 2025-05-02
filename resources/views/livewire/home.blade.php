@@ -12,8 +12,8 @@
                 <div class="mb-6">
                     <label for="description" class="block text-sm font-medium text-gray-300">Description</label>
                     <textarea wire:model="description" id="description" name="description" rows="4"
-                              class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm text-gray-200"
-                              placeholder="Enter description" required></textarea>
+                              class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm text-gray-200 resize-none"
+                              placeholder="Enter description" required ></textarea>
                     @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
                 <div class="flex justify-center">
